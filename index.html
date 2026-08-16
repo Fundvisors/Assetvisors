@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assetvisors — Complete Asset Visibility, Always.</title>
+<meta name="description" content="Assetvisors delivers pan-India physical asset verification, RFID & barcode tagging, fixed asset audits and cloud tracking dashboards. Track. Manage. Protect.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0b0d;
+    --ink-soft:#232327;
+    --crimson:#7a0e1b;
+    --red:#e31c2f;
+    --red-bright:#ff2d3f;
+    --steel:#5b5f66;
+    --steel-light:#8a8e94;
+    --paper:#fbfaf8;
+    --paper-dim:#f2f0ec;
+    --line:#e5e2db;
+    --white:#ffffff;
+    --success:#1f8a52;
+    --font-display:'Barlow Condensed', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --radius:2px;
+    --maxw:1240px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{margin:0; padding:0; list-style:none;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 32px;}
+  @media (max-width:720px){ .wrap{padding:0 20px;} }
+
+  h1,h2,h3,h4{
+    font-family:var(--font-display);
+    font-weight:700;
+    letter-spacing:0.01em;
+    margin:0;
+    text-transform:uppercase;
+    line-height:1.02;
+  }
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--red);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:500;
+    margin-bottom:16px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px; background:var(--red);
+  }
+  .lead{
+    font-size:18px;
+    line-height:1.6;
+    color:var(--steel);
+    max-width:56ch;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    padding:15px 26px;
+    border-radius:var(--radius);
+    border:1.5px solid transparent;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--red);
+    color:var(--white);
+    box-shadow:0 6px 0 var(--crimson);
+  }
+  .btn-primary:hover{ transform:translateY(2px); box-shadow:0 4px 0 var(--crimson); }
+  .btn-dark{
+    background:var(--ink);
+    color:var(--white);
+    box-shadow:0 6px 0 #000;
+  }
+  .btn-dark:hover{ transform:translateY(2px); box-shadow:0 4px 0 #000;}
+  .btn-outline{
+    background:transparent;
+    border-color:var(--ink);
+    color:var(--ink);
+  }
+  .btn-outline:hover{ background:var(--ink); color:var(--white); }
+  .btn-ghost-white{
+    background:transparent;
+    border-color:rgba(255,255,255,.4);
+    color:var(--white);
+  }
+  .btn-ghost-white:hover{ background:rgba(255,255,255,.12); border-color:#fff; }
+
+  /* ---------------- HEADER ---------------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(251,250,248,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center;
+    padding:14px 32px;
+    max-width:var(--maxw); margin:0 auto;
+    gap:28px;
+  }
+  .nav-logo{ flex-shrink:0; display:flex; align-items:center; }
+  .nav-logo img{ height:52px; width:auto; display:block; }
+  .nav-links{ display:flex; align-items:center; gap:22px; flex:1; justify-content:center; }
+  .nav-links a{
+    font-size:12.5px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink-soft);
+    position:relative;
+    padding:6px 0;
+    white-space:nowrap;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:2px; background:var(--red);
+    transition:width .2s ease;
+  }
+  .nav-links a:hover::after{ width:100%; }
+  .nav-cta{ display:flex; align-items:center; gap:14px; flex-shrink:0; }
+  .nav-phone{
+    display:flex; align-items:center; gap:8px;
+    font-family:var(--font-mono); font-size:13px; font-weight:500; color:var(--ink);
+    white-space:nowrap;
+  }
+  .nav-phone svg{ width:16px; height:16px; stroke:var(--red); flex-shrink:0; }
+  .burger{ display:none; background:none; border:none; cursor:pointer; flex-shrink:0; }
+  .burger span{ display:block; width:24px; height:2px; background:var(--ink); margin:5px 0; }
+  @media (max-width:1180px){
+    .nav-links{ display:none; }
+    .nav-phone{ display:none; }
+    .burger{ display:block; }
+    .nav{ justify-content:space-between; }
+  }
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    background:var(--ink);
+    color:var(--white);
+    padding:96px 0 0;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse 80% 60% at 30% 20%, black 30%, transparent 75%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:40px;
+    align-items:center;
+    padding-bottom:64px;
+  }
+  @media (max-width:960px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero h1{
+    font-size:clamp(42px, 6vw, 74px);
+    color:var(--white);
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, var(--red-bright), var(--crimson));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero .lead{ color:#c7c8cc; margin:22px 0 32px; }
+  .hero-ctas{ display:flex; gap:16px; flex-wrap:wrap; }
+
+  .scan-panel{
+    background:#111114;
+    border:1px solid #2a2a2f;
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
+  }
+  .scan-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 18px;
+    border-bottom:1px solid #2a2a2f;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.08em; color:#9a9ba0;
+  }
+  .scan-head .dot{ width:8px; height:8px; border-radius:50%; background:var(--red); display:inline-block; margin-right:8px; box-shadow:0 0 8px var(--red); animation:pulse 1.6s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
+  .scan-body{ height:300px; overflow:hidden; position:relative; }
+  .scan-body::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg, #111114 0%, transparent 12%, transparent 88%, #111114 100%);
+  }
+  .scan-track{ display:flex; flex-direction:column; animation:scrollUp 14s linear infinite; }
+  @keyframes scrollUp{ from{ transform:translateY(0);} to{ transform:translateY(-50%);} }
+  .scan-row{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 18px;
+    font-family:var(--font-mono); font-size:12.5px;
+    border-bottom:1px dashed #232327;
+    color:#d6d7db;
+  }
+  .scan-row .id{ color:#fff; font-weight:600; }
+  .scan-row .tag{
+    margin-left:auto;
+    font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    padding:3px 8px; border-radius:20px;
+  }
+  .tag.ok{ background:rgba(31,138,82,.15); color:#3ddb8f; border:1px solid rgba(61,219,143,.3); }
+  .tag.wip{ background:rgba(227,28,47,.15); color:#ff5d6c; border:1px solid rgba(255,93,108,.3); }
+  .scan-foot{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 18px; border-top:1px solid #2a2a2f;
+    font-family:var(--font-mono); font-size:11px; color:#7d7e83;
+  }
+
+  .hero-stats{
+    position:relative;
+    border-top:1px solid #2a2a2f;
+    background:#0e0e10;
+  }
+  .hero-stats .wrap{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:0;
+  }
+  @media (max-width:720px){ .hero-stats .wrap{ grid-template-columns:repeat(2,1fr);} }
+  .stat{
+    padding:26px 22px;
+    border-right:1px solid #2a2a2f;
+  }
+  .stat:last-child{ border-right:none; }
+  .stat .num{
+    font-family:var(--font-display); font-size:34px; font-weight:700; color:var(--white);
+  }
+  .stat .num span{ color:var(--red-bright); }
+  .stat .label{
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.05em; color:#9a9ba0; text-transform:uppercase; margin-top:4px;
+  }
+
+  /* ---------------- SECTION GENERIC ---------------- */
+  section{ padding:100px 0; }
+  .section-head{ max-width:640px; margin-bottom:56px; }
+  .section-head h2{ font-size:clamp(30px,4vw,46px); margin-top:10px; }
+  .band{ background:var(--paper-dim); }
+
+  /* ---------------- SERVICES ---------------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:900px){ .services-grid{ grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .services-grid{ grid-template-columns:1fr;} }
+  .service-card{
+    background:var(--paper);
+    padding:34px 30px;
+    transition:background .2s ease;
+    position:relative;
+  }
+  .service-card:hover{ background:var(--white); }
+  .service-card:hover .icn{ transform:translateY(-3px); }
+  .service-card .icn{
+    width:46px; height:46px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--ink); border-radius:4px; margin-bottom:22px;
+    transition:transform .2s ease;
+  }
+  .service-card .icn svg{ width:24px; height:24px; stroke:var(--red-bright); }
+  .service-card h3{ font-size:22px; margin-bottom:10px; letter-spacing:0.01em; }
+  .service-card p{ color:var(--steel); font-size:14.5px; line-height:1.65; margin:0 0 14px; }
+  .service-card .tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .service-card .tags span{
+    font-family:var(--font-mono); font-size:10.5px; letter-spacing:.03em;
+    color:var(--crimson); background:#fbe9ea; padding:3px 8px; border-radius:20px; text-transform:uppercase;
+  }
+
+  /* ---------------- PROCESS ---------------- */
+  .process{ counter-reset:step; }
+  .process-list{ display:flex; flex-direction:column; }
+  .process-item{
+    display:grid; grid-template-columns:90px 1fr; gap:28px;
+    padding:34px 0; border-top:1px solid var(--line);
+    counter-increment:step;
+  }
+  .process-item:last-child{ border-bottom:1px solid var(--line); }
+  .process-item .num{
+    font-family:var(--font-mono); font-size:15px; color:var(--red); font-weight:600;
+  }
+  .process-item .num::before{ content: counter(step, decimal-leading-zero); font-size:40px; font-family:var(--font-display); color:var(--ink); display:block; line-height:1;}
+  .process-item h3{ font-size:23px; margin-bottom:8px; text-transform:none; font-family:var(--font-display); letter-spacing:0; }
+  .process-item p{ color:var(--steel); max-width:60ch; line-height:1.65; margin:0; font-size:15px; }
+  .process-item .meta{ font-family:var(--font-mono); font-size:11.5px; color:var(--steel-light); margin-top:10px; letter-spacing:.03em; text-transform:uppercase; }
+
+  /* ---------------- WHY / FEATURES ---------------- */
+  .feature-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:26px;
+  }
+  @media (max-width:960px){ .feature-grid{ grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .feature-grid{ grid-template-columns:1fr;} }
+  .feature{
+    padding:0;
+  }
+  .feature .icn{ width:38px; height:38px; margin-bottom:18px; }
+  .feature .icn svg{ width:100%; height:100%; stroke:var(--red); }
+  .feature h4{ font-family:var(--font-body); text-transform:none; font-size:17px; font-weight:700; margin-bottom:8px; letter-spacing:0; }
+  .feature p{ color:var(--steel); font-size:14px; line-height:1.6; margin:0; }
+
+  /* ---------------- TECH / RFID vs BARCODE ---------------- */
+  .tech-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start; }
+  @media (max-width:900px){ .tech-wrap{ grid-template-columns:1fr; } }
+  table.compare{ width:100%; border-collapse:collapse; font-size:14px; }
+  table.compare th, table.compare td{ text-align:left; padding:14px 10px; border-bottom:1px solid var(--line); }
+  table.compare th{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--steel-light); font-weight:500; }
+  table.compare td:first-child{ font-weight:600; color:var(--ink-soft); width:36%; }
+  table.compare td.yes{ color:var(--success); font-weight:700; }
+  table.compare td.no{ color:var(--steel-light); }
+  .tag-types{ display:flex; flex-direction:column; gap:14px; }
+  .tag-type{ display:flex; gap:16px; padding:16px; border:1px solid var(--line); background:var(--white); align-items:flex-start; }
+  .tag-type .swatch{ width:34px; height:44px; border-radius:3px; flex-shrink:0; margin-top:2px; background:linear-gradient(160deg, var(--ink), #333); position:relative; }
+  .tag-type .swatch::after{ content:""; position:absolute; top:6px; left:6px; right:6px; height:2px; background:var(--red); }
+  .tag-type h4{ font-size:15px; margin:0 0 4px; font-weight:700; }
+  .tag-type p{ margin:0; font-size:13px; color:var(--steel); line-height:1.55; }
+
+  /* ---------------- INDUSTRIES ---------------- */
+  .industry-strip{
+    display:flex; overflow-x:auto; gap:1px; background:var(--line); border:1px solid var(--line);
+    scrollbar-width:none;
+  }
+  .industry-strip::-webkit-scrollbar{ display:none; }
+  .industry-card{
+    flex:1 0 200px; background:var(--white); padding:28px 22px; min-height:150px;
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .industry-card .idx{ font-family:var(--font-mono); font-size:11px; color:var(--red); }
+  .industry-card h4{ font-family:var(--font-display); text-transform:uppercase; font-size:20px; margin-top:26px; letter-spacing:0.01em; }
+
+  /* ---------------- TESTIMONIALS ---------------- */
+  .testi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  @media (max-width:900px){ .testi-grid{ grid-template-columns:1fr; } }
+  .testi-card{ background:var(--white); border:1px solid var(--line); padding:30px; display:flex; flex-direction:column; height:100%; }
+  .testi-card .stars{ color:var(--red); font-size:14px; letter-spacing:2px; margin-bottom:16px; }
+  .testi-card p{ font-size:15px; line-height:1.7; color:var(--ink-soft); flex:1; margin:0 0 20px; }
+  .testi-card .who{ font-family:var(--font-mono); font-size:12px; color:var(--steel); border-top:1px solid var(--line); padding-top:14px; }
+  .testi-card .who b{ color:var(--ink); font-family:var(--font-body); font-size:13.5px; display:block; margin-bottom:2px; }
+
+  /* ---------------- FAQ ---------------- */
+  .faq-list{ max-width:820px; }
+  .faq-item{ border-bottom:1px solid var(--line); }
+  .faq-q{
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    padding:24px 0; cursor:pointer; background:none; border:none; width:100%; text-align:left;
+    font-family:var(--font-body); font-size:17px; font-weight:600; color:var(--ink);
+  }
+  .faq-q .plus{ font-family:var(--font-mono); font-size:20px; color:var(--red); transition:transform .2s ease; flex-shrink:0; }
+  .faq-item.open .plus{ transform:rotate(45deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-a p{ margin:0 0 24px; color:var(--steel); font-size:14.5px; line-height:1.7; max-width:70ch; }
+
+  /* ---------------- CTA BAND ---------------- */
+  .cta-band{
+    background:var(--ink); color:var(--white); position:relative; overflow:hidden;
+  }
+  .cta-band::before{
+    content:""; position:absolute; right:-80px; top:-80px; width:360px; height:360px;
+    background:radial-gradient(circle, rgba(227,28,47,.35), transparent 70%);
+  }
+  .cta-inner{ position:relative; display:flex; align-items:center; justify-content:space-between; gap:30px; flex-wrap:wrap; }
+  .cta-inner h2{ font-size:clamp(28px,4vw,42px); color:var(--white); max-width:520px; }
+  .cta-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  /* ---------------- CONTACT ---------------- */
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:60px; }
+  @media (max-width:900px){ .contact-grid{ grid-template-columns:1fr; } }
+  .contact-cards{ display:flex; flex-direction:column; gap:16px; }
+  .contact-card{
+    display:flex; align-items:center; gap:18px;
+    padding:22px; border:1px solid var(--line); background:var(--white);
+    transition:border-color .2s ease, transform .15s ease;
+  }
+  .contact-card:hover{ border-color:var(--red); transform:translateX(4px); }
+  .contact-card .icn{ width:44px; height:44px; background:var(--paper-dim); display:flex; align-items:center; justify-content:center; border-radius:4px; flex-shrink:0; }
+  .contact-card .icn svg{ width:22px; height:22px; stroke:var(--red); }
+  .contact-card .label{ font-family:var(--font-mono); font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--steel-light); }
+  .contact-card .value{ font-size:16.5px; font-weight:700; color:var(--ink); }
+
+  .form-box{ background:var(--white); border:1px solid var(--line); padding:34px; }
+  .form-box h3{ font-family:var(--font-body); text-transform:none; font-size:20px; font-weight:700; margin-bottom:6px; }
+  .form-box .lead{ font-size:14px; margin-bottom:24px; }
+  .field{ margin-bottom:16px; }
+  .field label{ display:block; font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--steel); margin-bottom:6px; }
+  .field input, .field select, .field textarea{
+    width:100%; padding:12px 14px; border:1px solid var(--line); background:var(--paper); font-family:var(--font-body); font-size:14px; color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ outline:2px solid var(--red); outline-offset:1px; border-color:var(--red); }
+  .field textarea{ resize:vertical; min-height:90px; }
+  .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:520px){ .form-row{ grid-template-columns:1fr; } }
+
+  /* ---------------- FOOTER ---------------- */
+  footer{ background:#0b0b0d; color:#b9bac0; padding:70px 0 26px; }
+  .foot-grid{ display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr; gap:40px; padding-bottom:50px; border-bottom:1px solid #232327; }
+  @media (max-width:800px){ .foot-grid{ grid-template-columns:1fr 1fr; } }
+  .foot-logo{ background:var(--white); display:inline-block; padding:14px 22px 10px; border-radius:6px; margin-bottom:18px; line-height:0; }
+  .foot-logo img{ height:44px; display:block; }
+  .foot-grid p{ font-size:13.5px; line-height:1.7; color:#8a8c92; max-width:32ch; }
+  .foot-col h5{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#6e7076; margin-bottom:18px; }
+  .foot-col ul li{ margin-bottom:11px; }
+  .foot-col ul li a{ font-size:14px; color:#c7c8cc; }
+  .foot-col ul li a:hover{ color:var(--red-bright); }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:24px; flex-wrap:wrap; gap:10px; font-size:12.5px; color:#6e7076; font-family:var(--font-mono); }
+  .foot-social{ display:flex; gap:12px; }
+  .foot-social a{ width:34px; height:34px; border:1px solid #2a2a2f; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .foot-social a:hover{ border-color:var(--red); }
+  .foot-social svg{ width:15px; height:15px; stroke:#c7c8cc; }
+
+  /* ---------------- WHATSAPP FLOAT ---------------- */
+  .wa-float{
+    position:fixed; bottom:24px; right:24px; z-index:200;
+    width:60px; height:60px; border-radius:50%;
+    background:#25D366; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(0,0,0,.25);
+    animation:floatbob 2.4s ease-in-out infinite;
+  }
+  .wa-float svg{ width:30px; height:30px; fill:#fff; }
+  @keyframes floatbob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
+
+  /* reveal */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .scan-track{ animation:none; }
+    .wa-float{ animation:none; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+  }
+
+  /* ---------------- OLD WAY VS NEW WAY ---------------- */
+  .vs-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+  @media (max-width:800px){ .vs-wrap{ grid-template-columns:1fr; } }
+  .vs-col{ background:var(--white); padding:38px 34px; }
+  .vs-col.old{ background:#f5f2ee; }
+  .vs-col.new{ background:var(--ink); color:#fff; }
+  .vs-col .vs-tag{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:6px; display:block; }
+  .vs-col.old .vs-tag{ color:var(--steel-light); }
+  .vs-col.new .vs-tag{ color:var(--red-bright); }
+  .vs-col h3{ font-family:var(--font-body); text-transform:none; font-size:22px; font-weight:800; margin-bottom:22px; letter-spacing:0; }
+  .vs-col ul li{ display:flex; gap:12px; padding:12px 0; border-top:1px solid rgba(0,0,0,.08); font-size:14.5px; line-height:1.55; }
+  .vs-col.new ul li{ border-top:1px solid rgba(255,255,255,.1); color:#d6d7db; }
+  .vs-col ul li:first-child{ border-top:none; }
+  .vs-col ul li .mark{ flex-shrink:0; width:20px; height:20px; margin-top:1px; }
+  .vs-col.old ul li .mark{ color:#b3453f; }
+  .vs-col.new ul li .mark{ color:#3ddb8f; }
+
+  /* ---------------- LIFECYCLE CHAIN ---------------- */
+  .lifecycle{ display:flex; align-items:stretch; flex-wrap:wrap; gap:0; justify-content:center; }
+  .lc-node{
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+    width:132px; padding:6px;
+  }
+  .lc-node .ring{
+    width:74px; height:74px; border-radius:50%;
+    border:2px solid var(--ink); background:var(--white);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:14px; position:relative; transition:border-color .2s ease, transform .2s ease;
+  }
+  .lc-node:hover .ring{ border-color:var(--red); transform:translateY(-4px); }
+  .lc-node .ring svg{ width:28px; height:28px; stroke:var(--ink); }
+  .lc-node:hover .ring svg{ stroke:var(--red); }
+  .lc-node .idx{ position:absolute; top:-6px; right:-6px; width:22px; height:22px; border-radius:50%; background:var(--red); color:#fff; font-family:var(--font-mono); font-size:11px; display:flex; align-items:center; justify-content:center; }
+  .lc-node h4{ font-size:14.5px; font-weight:700; margin-bottom:4px; }
+  .lc-node p{ font-size:12px; color:var(--steel); margin:0; line-height:1.4; }
+  .lc-arrow{ display:flex; align-items:center; padding-top:32px; color:var(--steel-light); flex-shrink:0; }
+  .lc-arrow svg{ width:22px; height:22px; }
+  @media (max-width:720px){ .lc-arrow{ display:none; } .lc-node{ width:46%; } }
+  .lc-loop{ display:flex; align-items:center; justify-content:center; gap:12px; margin-top:26px; padding-top:26px; border-top:1px dashed var(--line); font-family:var(--font-mono); font-size:12.5px; color:var(--steel); text-align:center; }
+  .lc-loop svg{ width:20px; height:20px; stroke:var(--red); flex-shrink:0; }
+
+  /* ---------------- RANGE SPECTRUM ---------------- */
+  .spectrum{ position:relative; padding:70px 10px 90px; }
+  .spectrum-track{ position:relative; height:6px; border-radius:4px; background:linear-gradient(90deg, #d7d4cc, var(--red) 50%, var(--crimson) 100%); margin:0 6px; }
+  .spec-pt{ position:absolute; top:50%; transform:translate(-50%,-50%); }
+  .spec-dot{ width:16px; height:16px; border-radius:50%; background:var(--white); border:3px solid var(--red); box-shadow:0 0 0 5px rgba(227,28,47,.12); }
+  .spec-card{ position:absolute; left:50%; transform:translateX(-50%); width:150px; text-align:center; }
+  .spec-card.up{ bottom:26px; }
+  .spec-card.down{ top:26px; }
+  .spec-card .t{ font-weight:800; font-size:13.5px; margin-bottom:3px; }
+  .spec-card .r{ font-family:var(--font-mono); font-size:15px; color:var(--red); font-weight:600; }
+  .spec-card .d{ font-size:11.5px; color:var(--steel); line-height:1.4; margin-top:2px; }
+  @media (max-width:720px){ .spectrum{ display:none; } }
+  .spectrum-mobile{ display:none; }
+  @media (max-width:720px){ .spectrum-mobile{ display:block; } }
+
+  /* ---------------- TECH CARDS GRID ---------------- */
+  .tech-cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:56px; }
+  @media (max-width:900px){ .tech-cards{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:560px){ .tech-cards{ grid-template-columns:1fr; } }
+  .tech-card{ background:var(--white); padding:28px 26px; }
+  .tech-card .thead{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+  .tech-card .thead svg{ width:26px; height:26px; stroke:var(--red); }
+  .tech-card .cost{ font-family:var(--font-mono); font-size:12px; color:var(--steel-light); }
+  .tech-card .cost b{ color:var(--red); }
+  .tech-card h4{ font-size:17px; font-weight:800; margin-bottom:8px; }
+  .tech-card p{ font-size:13.5px; color:var(--steel); line-height:1.6; margin:0 0 14px; }
+  .spec-row{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11.5px; padding:7px 0; border-top:1px solid var(--line); color:var(--steel); }
+  .spec-row b{ color:var(--ink-soft); font-family:var(--font-body); font-weight:600; }
+
+  /* ---------------- ASSET CATEGORIES ---------------- */
+  .cat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  @media (max-width:900px){ .cat-grid{ grid-template-columns:repeat(2,1fr); } }
+  .cat-chip{ display:flex; align-items:center; gap:14px; padding:18px 18px; background:var(--white); border:1px solid var(--line); }
+  .cat-chip svg{ width:26px; height:26px; stroke:var(--red); flex-shrink:0; }
+  .cat-chip span{ font-size:14px; font-weight:600; color:var(--ink-soft); }
+
+  /* ---------------- COMPLIANCE ---------------- */
+  .compliance-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+  @media (max-width:900px){ .compliance-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .compliance-grid{ grid-template-columns:1fr; } }
+  .compliance-card{ padding:26px; border:1px solid #2a2a2f; background:#111114; }
+  .compliance-card .icn{ width:38px; height:38px; margin-bottom:16px; }
+  .compliance-card .icn svg{ width:100%; height:100%; stroke:var(--red-bright); }
+  .compliance-card h4{ font-size:16px; font-weight:700; color:#fff; margin-bottom:8px; }
+  .compliance-card p{ font-size:13px; color:#9a9ba0; line-height:1.6; margin:0; }
+
+  /* ---------------- PRICING ---------------- */
+  .pricing-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:stretch; }
+  @media (max-width:900px){ .pricing-grid{ grid-template-columns:1fr; } }
+  .price-card{ border:1px solid var(--line); background:var(--white); padding:32px 28px; display:flex; flex-direction:column; }
+  .price-card.featured{ border-color:var(--red); position:relative; box-shadow:0 20px 40px -25px rgba(227,28,47,.4); }
+  .price-card.featured::before{ content:"MOST CHOSEN"; position:absolute; top:-13px; left:28px; background:var(--red); color:#fff; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.08em; padding:4px 10px; }
+  .price-card .ptag{ font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--steel-light); margin-bottom:8px; }
+  .price-card h3{ font-family:var(--font-body); text-transform:none; font-size:22px; font-weight:800; margin-bottom:10px; letter-spacing:0; }
+  .price-card .pdesc{ font-size:13.5px; color:var(--steel); line-height:1.6; margin-bottom:22px; min-height:60px; }
+  .price-card ul{ margin-bottom:26px; flex:1; }
+  .price-card ul li{ display:flex; gap:10px; font-size:13.5px; padding:9px 0; border-top:1px solid var(--line); color:var(--ink-soft); }
+  .price-card ul li:first-child{ border-top:none; }
+  .price-card ul li svg{ width:16px; height:16px; stroke:var(--red); flex-shrink:0; margin-top:2px; }
+  .price-card .btn{ width:100%; justify-content:center; }
+
+  /* ---------------- CASE STUDIES ---------------- */
+  .case-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  @media (max-width:900px){ .case-grid{ grid-template-columns:1fr; } }
+  .case-card{ border:1px solid var(--line); background:var(--white); padding:28px; }
+  .case-card .ctag{ font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--red); margin-bottom:10px; }
+  .case-card h4{ font-size:19px; font-weight:800; margin-bottom:12px; line-height:1.3; }
+  .case-card p{ font-size:13.5px; color:var(--steel); line-height:1.6; margin:0 0 20px; }
+  .case-bar{ margin-bottom:12px; }
+  .case-bar .lbl{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px; color:var(--steel); margin-bottom:5px; }
+  .case-bar .track{ height:8px; background:var(--paper-dim); border-radius:6px; overflow:hidden; }
+  .case-bar .fill{ height:100%; border-radius:6px; background:linear-gradient(90deg, var(--crimson), var(--red-bright)); width:0; transition:width 1.2s ease; }
+  .case-bar.before .fill{ background:#c7c8cc; }
+
+  /* ---------------- PLATFORM MOCKUP ---------------- */
+  .mockup{ border:1px solid #2a2a2f; border-radius:8px; overflow:hidden; background:#111114; box-shadow:0 30px 60px -25px rgba(0,0,0,.5); }
+  .mockup-bar{ display:flex; align-items:center; gap:6px; padding:12px 16px; border-bottom:1px solid #2a2a2f; }
+  .mockup-bar span{ width:9px; height:9px; border-radius:50%; background:#3a3a3f; }
+  .mockup-body{ display:grid; grid-template-columns:120px 1fr; min-height:300px; }
+  .mockup-side{ border-right:1px solid #2a2a2f; padding:18px 14px; display:flex; flex-direction:column; gap:10px; }
+  .mockup-side .mi{ height:9px; border-radius:3px; background:#242428; }
+  .mockup-side .mi.active{ background:var(--red); width:70%; }
+  .mockup-main{ padding:20px; display:flex; flex-direction:column; gap:16px; }
+  .mockup-kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .mockup-kpi{ background:#18181b; border:1px solid #2a2a2f; border-radius:5px; padding:12px; }
+  .mockup-kpi .n{ font-family:var(--font-mono); color:#fff; font-size:17px; font-weight:600; }
+  .mockup-kpi .l{ font-family:var(--font-mono); font-size:9.5px; color:#7d7e83; text-transform:uppercase; margin-top:3px; }
+  .mockup-chart{ flex:1; display:flex; align-items:flex-end; gap:6px; background:#18181b; border:1px solid #2a2a2f; border-radius:5px; padding:16px; min-height:110px; }
+  .mockup-chart i{ flex:1; background:linear-gradient(180deg, var(--red-bright), var(--crimson)); border-radius:2px 2px 0 0; }
+  .mockup-rows{ display:flex; flex-direction:column; gap:8px; }
+  .mockup-row{ display:flex; align-items:center; gap:10px; background:#18181b; border:1px solid #2a2a2f; border-radius:4px; padding:9px 12px; }
+  .mockup-row .dot{ width:7px; height:7px; border-radius:50%; background:#3ddb8f; flex-shrink:0; }
+  .mockup-row .mi{ height:7px; border-radius:3px; background:#242428; flex:1; }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="nav">
+    <a href="#top" class="nav-logo"><img src="assetvisors-logo-cropped.png" alt="Assetvisors — Track, Manage, Protect"></a>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#technology">Technology</a>
+      <a href="#industries">Industries</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="nav-phone" href="tel:+919953879916">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        +91 99538 79916
+      </a>
+      <a class="btn btn-primary" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27d%20like%20a%20free%20asset%20verification%20%26%20tagging%20quote." target="_blank" rel="noopener">Get Free Quote</a>
+    </div>
+    <button class="burger" aria-label="menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<div id="top" class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">PAN-INDIA · RFID &amp; BARCODE ASSET SOLUTIONS</div>
+      <h1>Every Asset.<br>Verified, Tagged<br>&amp; <em>Always Visible.</em></h1>
+      <p class="lead">Assetvisors runs boots-on-ground physical verification and RFID/barcode tagging drives for enterprises across India — then hands you a live dashboard so you never lose sight of a single asset again.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27d%20like%20a%20free%20asset%20verification%20%26%20tagging%20quote." target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.44 1.32 4.94L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.08h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.13.82.83-3.05-.2-.31a8.16 8.16 0 0 1-1.26-4.3c0-4.52 3.68-8.2 8.22-8.2 2.2 0 4.26.86 5.81 2.41a8.15 8.15 0 0 1 2.41 5.8c0 4.52-3.69 8.16-8.19 8.16z"/></svg>
+          WhatsApp Us Now
+        </a>
+        <a class="btn btn-outline btn-ghost-white" href="#services">Explore Services ↓</a>
+      </div>
+    </div>
+
+    <div class="scan-panel">
+      <div class="scan-head"><span><span class="dot"></span>LIVE VERIFICATION FEED</span><span>SITE: DL-HO-04</span></div>
+      <div class="scan-body">
+        <div class="scan-track" id="scanTrack">
+          <div class="scan-row"><span class="id">AV-IT-00931</span><span>Dell Latitop 5420</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-FA-04512</span><span>Workstn Chair</span><span class="tag ok">✓ Tagged</span></div>
+          <div class="scan-row"><span class="id">AV-EL-01187</span><span>HVAC Unit — 3F</span><span class="tag wip">⏳ Scanning</span></div>
+          <div class="scan-row"><span class="id">AV-IT-00932</span><span>HP LaserJet M428</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-FA-04513</span><span>Conference Table</span><span class="tag ok">✓ Tagged</span></div>
+          <div class="scan-row"><span class="id">AV-VE-00221</span><span>Forklift — Bay 2</span><span class="tag wip">⏳ Scanning</span></div>
+          <div class="scan-row"><span class="id">AV-IT-00933</span><span>Cisco Switch 24P</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-FA-04514</span><span>Server Rack Cab.</span><span class="tag ok">✓ Tagged</span></div>
+          <div class="scan-row"><span class="id">AV-EL-01188</span><span>UPS 10kVA — B1</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-IT-00934</span><span>MacBook Pro 14"</span><span class="tag wip">⏳ Scanning</span></div>
+          <!-- duplicate set for seamless loop -->
+          <div class="scan-row"><span class="id">AV-IT-00931</span><span>Dell Latitop 5420</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-FA-04512</span><span>Workstn Chair</span><span class="tag ok">✓ Tagged</span></div>
+          <div class="scan-row"><span class="id">AV-EL-01187</span><span>HVAC Unit — 3F</span><span class="tag wip">⏳ Scanning</span></div>
+          <div class="scan-row"><span class="id">AV-IT-00932</span><span>HP LaserJet M428</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-FA-04513</span><span>Conference Table</span><span class="tag ok">✓ Tagged</span></div>
+          <div class="scan-row"><span class="id">AV-VE-00221</span><span>Forklift — Bay 2</span><span class="tag wip">⏳ Scanning</span></div>
+          <div class="scan-row"><span class="id">AV-IT-00933</span><span>Cisco Switch 24P</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-FA-04514</span><span>Server Rack Cab.</span><span class="tag ok">✓ Tagged</span></div>
+          <div class="scan-row"><span class="id">AV-EL-01188</span><span>UPS 10kVA — B1</span><span class="tag ok">✓ Verified</span></div>
+          <div class="scan-row"><span class="id">AV-IT-00934</span><span>MacBook Pro 14"</span><span class="tag wip">⏳ Scanning</span></div>
+        </div>
+      </div>
+      <div class="scan-foot"><span>RFID + BARCODE HYBRID SCAN</span><span>99.8% MATCH RATE</span></div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="wrap">
+      <div class="stat"><div class="num"><span>21L</span>+</div><div class="label">Assets Tagged &amp; Verified</div></div>
+      <div class="stat"><div class="num"><span>640</span>+</div><div class="label">Audit Engagements</div></div>
+      <div class="stat"><div class="num"><span>99.8</span>%</div><div class="label">Reconciliation Accuracy</div></div>
+      <div class="stat"><div class="num"><span>18</span> States</div><div class="label">On-ground Field Coverage</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= OLD WAY VS NEW WAY ================= -->
+<section class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">THE PROBLEM WE FIX</div>
+      <h2>Spreadsheets lose assets. Field-verified data doesn't</h2>
+      <p class="lead">Most fixed asset registers drift from reality within a year — assets move floors, get transferred between departments, or quietly disappear. Here's what changes once Assetvisors is in the loop.</p>
+    </div>
+    <div class="vs-wrap reveal">
+      <div class="vs-col old">
+        <span class="vs-tag">Without Assetvisors</span>
+        <h3>Manual, spreadsheet-led tracking</h3>
+        <ul>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg> Register updated only during year-end audits, if at all</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg> No physical proof an asset exists where the books say it does</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg> Ghost assets keep depreciating on paper for years</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg> Transfers between departments go unrecorded</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg> Statutory auditors flag unreconciled variances every year</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg> Insurance claims delayed for lack of condition proof</li>
+        </ul>
+      </div>
+      <div class="vs-col new">
+        <span class="vs-tag">With Assetvisors</span>
+        <h3>Field-verified, always-live tracking</h3>
+        <ul>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Every asset scanned, tagged and geo-located on-site</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Barcode/RFID scan proves physical existence instantly</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Ghost and idle assets flagged the day they're found</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Custodian transfers logged with a timestamped trail</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Auditor-ready exception reports generated automatically</li>
+          <li><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg> Photo-documented condition speeds up every claim</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">WHAT WE DO</div>
+      <h2>One partner for the entire asset lifecycle</h2>
+      <p class="lead">From the first physical count to disposal certification — every service is built to plug straight into your finance, IT and compliance workflows.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Physical Asset Verification</h3>
+        <p>Wall-to-wall floor audits by trained field teams — matching every item on the ground against your fixed asset register, flagging ghost, idle and untraceable assets.</p>
+        <div class="tags"><span>Ghost Assets</span><span>Idle Assets</span><span>Location Mapping</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4"/><path d="M6 8v8"/><path d="M10 5v14"/><path d="M14 8v8"/><path d="M18 5v14"/><path d="M22 8v8"/></svg></div>
+        <h3>Barcode Asset Tagging</h3>
+        <p>Tamper-evident, void-if-removed barcode labels engineered for durability — machine, IT hardware and furniture grades, printed with your custom numbering scheme.</p>
+        <div class="tags"><span>Void Labels</span><span>Custom Series</span><span>Weatherproof</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg></div>
+        <h3>RFID Tagging &amp; Reading</h3>
+        <p>UHF passive RFID tags for bulk, contactless scanning — read hundreds of assets a minute with handheld or fixed readers, ideal for warehouses and IT racks.</p>
+        <div class="tags"><span>UHF Passive</span><span>Bulk Scan</span><span>Metal-mount</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg></div>
+        <h3>Fixed Asset Register Reconciliation</h3>
+        <p>We reconcile physical findings against your books, generate variance reports, and hand your auditors a clean, exception-flagged register.</p>
+        <div class="tags"><span>Variance Reports</span><span>Statutory Audit Ready</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.1-2.8-2.8L7 14"/></svg></div>
+        <h3>Cloud Asset Tracking Dashboard</h3>
+        <p>A live, role-based portal showing asset location, custodian, status and depreciation — searchable by tag ID, department or floor plan.</p>
+        <div class="tags"><span>Live Dashboard</span><span>Custodian Trail</span><span>Mobile App</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/></svg></div>
+        <h3>Asset Insurance &amp; Risk Documentation</h3>
+        <p>Photographic condition records and valuation-ready documentation that speeds up insurance claims and internal risk assessments.</p>
+        <div class="tags"><span>Condition Photos</span><span>Claim Support</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></div>
+        <h3>Asset Disposal &amp; Retirement Verification</h3>
+        <p>Certified de-tagging and disposal verification for end-of-life assets, with e-waste compliant documentation for statutory write-offs.</p>
+        <div class="tags"><span>De-tagging</span><span>E-waste Compliant</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Deployed Manpower for Bulk Drives</h3>
+        <p>Trained, background-verified field associates deployed on-site in teams for large-scale, time-bound tagging and audit projects nationwide.</p>
+        <div class="tags"><span>Bulk Deployment</span><span>PAN India</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 2v4"/><path d="M16 2v4"/></svg></div>
+        <h3>Periodic Audit Retainer Programs</h3>
+        <p>Quarterly or annual cyclical audit contracts so your register stays accurate year-round instead of a one-time clean-up.</p>
+        <div class="tags"><span>Quarterly</span><span>Annual</span><span>AMC</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+        <h3>Field &amp; Custodian Mobile App</h3>
+        <p>Custodians scan and self-certify assets under their name from a phone — location changes, transfers and complaints logged instantly.</p>
+        <div class="tags"><span>Self-certification</span><span>Android / iOS</span></div>
+      </div>
+      <div class="service-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg></div>
+        <h3>Capitalisation &amp; GRN Tagging</h3>
+        <p>New purchases are tagged at the goods-receipt stage itself, so every asset enters your books already trackable from day one.</p>
+        <div class="tags"><span>Day-1 Tagging</span><span>GRN Linked</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ASSET LIFECYCLE ================= -->
+<section class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">THE BIG PICTURE</div>
+      <h2>We plug into every stage of the asset lifecycle</h2>
+      <p class="lead">Asset visibility isn't a one-time event — it's a loop. Here's where Assetvisors fits in.</p>
+    </div>
+    <div class="lifecycle reveal">
+      <div class="lc-node">
+        <div class="ring"><span class="idx">1</span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+        <h4>Procure</h4><p>Asset purchased &amp; received</p>
+      </div>
+      <div class="lc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="lc-node">
+        <div class="ring"><span class="idx">2</span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4"/><path d="M6 8v8"/><path d="M10 5v14"/><path d="M14 8v8"/><path d="M18 5v14"/></svg></div>
+        <h4>Tag</h4><p>Barcode / RFID affixed on-site</p>
+      </div>
+      <div class="lc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="lc-node">
+        <div class="ring"><span class="idx">3</span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h4>Deploy</h4><p>Assigned to custodian &amp; location</p>
+      </div>
+      <div class="lc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="lc-node">
+        <div class="ring"><span class="idx">4</span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+        <h4>Track</h4><p>Live on the cloud dashboard</p>
+      </div>
+      <div class="lc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="lc-node">
+        <div class="ring"><span class="idx">5</span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 1.4 0l1.6-1.6a1 1 0 0 0 0-1.4l-1.4-1.4a1 1 0 0 0-1.4 0l-1.6 1.6a1 1 0 0 0 0 1.4z"/><path d="M2.9 21.1L10 14"/></svg></div>
+        <h4>Maintain</h4><p>Service &amp; condition logged</p>
+      </div>
+      <div class="lc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="lc-node">
+        <div class="ring"><span class="idx">6</span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h4>Audit</h4><p>Periodic re-verification</p>
+      </div>
+      <div class="lc-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      <div class="lc-node">
+        <div class="ring"><span class="idx">7</span><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></div>
+        <h4>Retire</h4><p>De-tagged &amp; disposed compliantly</p>
+      </div>
+    </div>
+    <div class="lc-loop reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+      Retirement triggers fresh procurement — Assetvisors stays with the asset for every loop of the cycle.
+    </div>
+  </div>
+</section>
+
+<!-- ================= PLATFORM / DASHBOARD ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">THE PLATFORM</div>
+      <h2>One dashboard, every asset, always current</h2>
+      <p class="lead">The moment a tag is scanned in the field, it reflects here — location, custodian, condition and depreciation, searchable in seconds.</p>
+    </div>
+    <div class="tech-wrap reveal">
+      <div class="mockup">
+        <div class="mockup-bar"><span></span><span></span><span></span></div>
+        <div class="mockup-body">
+          <div class="mockup-side">
+            <div class="mi active"></div>
+            <div class="mi" style="width:55%"></div>
+            <div class="mi" style="width:80%"></div>
+            <div class="mi" style="width:40%"></div>
+            <div class="mi" style="width:65%"></div>
+            <div class="mi" style="width:30%"></div>
+          </div>
+          <div class="mockup-main">
+            <div class="mockup-kpis">
+              <div class="mockup-kpi"><div class="n">21,438</div><div class="l">Total Assets</div></div>
+              <div class="mockup-kpi"><div class="n">99.8%</div><div class="l">Verified</div></div>
+              <div class="mockup-kpi"><div class="n">12</div><div class="l">Open Exceptions</div></div>
+            </div>
+            <div class="mockup-chart">
+              <i style="height:35%"></i><i style="height:55%"></i><i style="height:40%"></i><i style="height:70%"></i><i style="height:50%"></i><i style="height:85%"></i><i style="height:60%"></i><i style="height:95%"></i>
+            </div>
+            <div class="mockup-rows">
+              <div class="mockup-row"><span class="dot"></span><div class="mi"></div></div>
+              <div class="mockup-row"><span class="dot"></span><div class="mi"></div></div>
+              <div class="mockup-row"><span class="dot" style="background:var(--red-bright)"></span><div class="mi"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="feature" style="margin-bottom:28px;">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+          <h4>Search any asset in seconds</h4>
+          <p>Look up by tag ID, serial number, custodian, department or floor plan — no more scrolling through spreadsheets.</p>
+        </div>
+        <div class="feature" style="margin-bottom:28px;">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+          <h4>Automated exception alerts</h4>
+          <p>Get notified the moment an asset goes missing, moves location without approval, or is due for re-verification.</p>
+        </div>
+        <div class="feature" style="margin-bottom:28px;">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="5"/><rect x="12" y="9" width="3" height="9"/><rect x="17" y="5" width="3" height="13"/></svg></div>
+          <h4>Depreciation &amp; valuation views</h4>
+          <p>Book value, useful life remaining and category-wise depreciation, refreshed automatically as audits close.</p>
+        </div>
+        <div class="feature">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <h4>Role-based access &amp; exports</h4>
+          <p>Finance, IT and facility teams each see what's relevant to them, and export audit-ready reports in one click.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section id="process" class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">HOW AN ENGAGEMENT RUNS</div>
+      <h2>From scoping call to live dashboard in five steps</h2>
+    </div>
+    <div class="process reveal">
+      <div class="process-list">
+        <div class="process-item">
+          <div class="num"></div>
+          <div>
+            <h3>Scoping &amp; Site Survey</h3>
+            <p>We map site count, asset categories and existing tagging so the drive is quoted and planned precisely — no surprises mid-project.</p>
+            <div class="meta">Deliverable · Project Scope Document</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <div class="num"></div>
+          <div>
+            <h3>Physical Verification</h3>
+            <p>Field associates walk every floor with handheld scanners, matching existing tags or capturing untagged assets against your register.</p>
+            <div class="meta">Deliverable · Raw Verification Data</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <div class="num"></div>
+          <div>
+            <h3>Tagging &amp; Labelling</h3>
+            <p>Barcode or RFID tags are printed with your custom ID scheme and affixed on-site, following category-specific placement standards.</p>
+            <div class="meta">Deliverable · Tagged &amp; Photographed Assets</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <div class="num"></div>
+          <div>
+            <h3>Reconciliation &amp; Exception Handling</h3>
+            <p>We cross-check ground data with your books, isolating missing, duplicate, misclassified and ghost assets into a clean exception list.</p>
+            <div class="meta">Deliverable · Variance &amp; Exception Report</div>
+          </div>
+        </div>
+        <div class="process-item">
+          <div class="num"></div>
+          <div>
+            <h3>Reporting &amp; Dashboard Go-live</h3>
+            <p>Final register, condition photos and audit trail are loaded onto your Assetvisors dashboard — searchable, exportable, audit-ready.</p>
+            <div class="meta">Deliverable · Live Cloud Dashboard + Reports</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHY / FEATURES ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">WHY ASSETVISORS</div>
+      <h2>Built for teams who can't afford asset blind spots</h2>
+    </div>
+    <div class="feature-grid reveal">
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>Tamper-evident tagging</h4>
+        <p>Void-if-removed barcode labels and secure RFID mounts mean a missing tag is an immediate red flag, not a silent loss.</p>
+      </div>
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/><path d="M9 4v16"/></svg></div>
+        <h4>Custom ID architecture</h4>
+        <p>We design a coding scheme mapped to your location, cost-centre and category structure — not a generic sequential number.</p>
+      </div>
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></div>
+        <h4>Statutory audit ready</h4>
+        <p>Reports formatted for companies-act fixed asset audits, so your auditors get exactly the reconciliation they ask for.</p>
+      </div>
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h4>Fast turnaround</h4>
+        <p>Standard site drives complete within 48–72 hours of mobilisation, with data uploaded to your dashboard the same week.</p>
+      </div>
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h4>Data security first</h4>
+        <p>NDA-bound field staff, encrypted data capture and access-controlled dashboards keep your asset data confidential end-to-end.</p>
+      </div>
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h4>Full audit trail</h4>
+        <p>Every scan is timestamped, geo-tagged and photo-logged — so any asset's verification history is traceable, always.</p>
+      </div>
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h4>Trained, verified field teams</h4>
+        <p>Background-checked associates trained on category-specific handling, from precision instruments to heavy plant equipment.</p>
+      </div>
+      <div class="feature">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="5"/><rect x="12" y="9" width="3" height="9"/><rect x="17" y="5" width="3" height="13"/></svg></div>
+        <h4>Depreciation-linked reporting</h4>
+        <p>Asset condition and usage data feed directly into depreciation schedules, helping finance teams close books faster.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TECHNOLOGY ================= -->
+<section id="technology" class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">THE TECHNOLOGY</div>
+      <h2>Barcode, RFID — or a hybrid of both</h2>
+      <p class="lead">We recommend the right identification technology per asset category, not a one-size-fits-all tag. Here's how the main options actually compare in the field.</p>
+    </div>
+
+    <div class="spectrum reveal">
+      <div class="spectrum-track">
+        <div class="spec-pt" style="left:3%;">
+          <div class="spec-card up"><div class="t">1D / 2D Barcode</div><div class="r">Contact</div><div class="d">Direct line-of-sight scan</div></div>
+          <div class="spec-dot"></div>
+        </div>
+        <div class="spec-pt" style="left:24%;">
+          <div class="spec-card down"><div class="t">NFC / HF RFID</div><div class="r">~10 cm</div><div class="d">Tap-to-read, high security</div></div>
+          <div class="spec-dot"></div>
+        </div>
+        <div class="spec-pt" style="left:50%;">
+          <div class="spec-card up"><div class="t">UHF Passive RFID</div><div class="r">8–12 m</div><div class="d">Bulk, battery-free tags</div></div>
+          <div class="spec-dot"></div>
+        </div>
+        <div class="spec-pt" style="left:75%;">
+          <div class="spec-card down"><div class="t">Active RFID (BLE)</div><div class="r">30–100 m</div><div class="d">Battery-powered, real-time</div></div>
+          <div class="spec-dot"></div>
+        </div>
+        <div class="spec-pt" style="left:97%;">
+          <div class="spec-card up"><div class="t">GPS / Cellular</div><div class="r">Unlimited</div><div class="d">Outdoor fleet &amp; heavy assets</div></div>
+          <div class="spec-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tech-cards reveal">
+      <div class="tech-card">
+        <div class="thead"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4"/><path d="M6 8v8"/><path d="M10 5v14"/><path d="M14 8v8"/><path d="M18 5v14"/><path d="M22 8v8"/></svg><span class="cost">Cost <b>₹</b>◦◦◦</span></div>
+        <h4>1D Barcode</h4>
+        <p>The most economical option — a printed linear code, scanned one item at a time with a handheld or app-based scanner.</p>
+        <div class="spec-row"><span>Read range</span><b>Contact / near</b></div>
+        <div class="spec-row"><span>Best for</span><b>Furniture, tools, low-value</b></div>
+        <div class="spec-row"><span>Durability</span><b>Laminate protected</b></div>
+      </div>
+      <div class="tech-card">
+        <div class="thead"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg><span class="cost">Cost <b>₹</b>◦◦◦</span></div>
+        <h4>2D / QR Barcode</h4>
+        <p>Stores far more data than 1D and survives partial damage — staff can also scan it with any smartphone camera for self-audits.</p>
+        <div class="spec-row"><span>Read range</span><b>Contact / near</b></div>
+        <div class="spec-row"><span>Best for</span><b>IT hardware, documents</b></div>
+        <div class="spec-row"><span>Durability</span><b>Reads even if 20–30% damaged</b></div>
+      </div>
+      <div class="tech-card">
+        <div class="thead"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M4.93 4.93l2.12 2.12"/><path d="M16.95 16.95l2.12 2.12"/></svg><span class="cost">Cost <b>₹₹</b>◦</span></div>
+        <h4>NFC / HF RFID</h4>
+        <p>A quick phone-tap read at close range — popular where you want staff to self-verify assets from the Assetvisors mobile app.</p>
+        <div class="spec-row"><span>Read range</span><b>Up to ~10 cm</b></div>
+        <div class="spec-row"><span>Best for</span><b>Access-controlled equipment</b></div>
+        <div class="spec-row"><span>Durability</span><b>Embedded, tamper resistant</b></div>
+      </div>
+      <div class="tech-card">
+        <div class="thead"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg><span class="cost">Cost <b>₹₹</b>◦</span></div>
+        <h4>UHF Passive RFID</h4>
+        <p>No battery needed — a handheld reader can scan hundreds of tags a minute without touching or even seeing each asset.</p>
+        <div class="spec-row"><span>Read range</span><b>8–12 m (handheld)</b></div>
+        <div class="spec-row"><span>Best for</span><b>Warehouses, server racks</b></div>
+        <div class="spec-row"><span>Durability</span><b>On-metal variants available</b></div>
+      </div>
+      <div class="tech-card">
+        <div class="thead"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 11-14h-7z"/></svg><span class="cost">Cost <b>₹₹₹</b></span></div>
+        <h4>Active RFID (Battery)</h4>
+        <p>A built-in battery broadcasts the tag's ID continuously, enabling near real-time location tracking of high-value moving assets.</p>
+        <div class="spec-row"><span>Read range</span><b>30–100 m</b></div>
+        <div class="spec-row"><span>Best for</span><b>Vehicles, heavy machinery</b></div>
+        <div class="spec-row"><span>Durability</span><b>3–5 yr battery life</b></div>
+      </div>
+      <div class="tech-card">
+        <div class="thead"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.33-7-11a7 7 0 0 1 14 0c0 5.67-7 11-7 11z"/><circle cx="12" cy="10" r="3"/></svg><span class="cost">Cost <b>₹₹₹</b></span></div>
+        <h4>GPS / Cellular Trackers</h4>
+        <p>For assets that leave the campus entirely — fleet vehicles, DG sets and rented equipment tracked live on a map, anywhere.</p>
+        <div class="spec-row"><span>Read range</span><b>Unlimited (network-based)</b></div>
+        <div class="spec-row"><span>Best for</span><b>Fleet, outdoor equipment</b></div>
+        <div class="spec-row"><span>Durability</span><b>IP67 rugged enclosures</b></div>
+      </div>
+    </div>
+
+    <div class="tech-wrap reveal" style="margin-top:56px;">
+      <div>
+        <table class="compare">
+          <thead>
+            <tr><th>Capability</th><th>Barcode</th><th>RFID (UHF)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Cost per tag</td><td class="yes">Low</td><td class="no">Moderate</td></tr>
+            <tr><td>Line-of-sight scan required</td><td class="no">Yes</td><td class="yes">No</td></tr>
+            <tr><td>Bulk scanning speed</td><td class="no">One at a time</td><td class="yes">100s / minute</td></tr>
+            <tr><td>Metal &amp; liquid tolerant tags</td><td class="yes">Available</td><td class="yes">Available (on-metal)</td></tr>
+            <tr><td>Best for</td><td class="yes">IT, furniture, tools</td><td class="yes">Warehouses, racks, fleets</td></tr>
+            <tr><td>Read range</td><td class="no">Contact / near</td><td class="yes">Up to 8–10m</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tag-types">
+        <div class="tag-type">
+          <div class="swatch"></div>
+          <div><h4>Polyester Barcode Labels</h4><p>Scratch and chemical resistant — the standard choice for IT assets, furniture and internal fittings.</p></div>
+        </div>
+        <div class="tag-type">
+          <div class="swatch" style="background:linear-gradient(160deg,#7a0e1b,#3a0710)"></div>
+          <div><h4>Anodised Metal Tags</h4><p>Engraved metal plates for heavy machinery, vehicles and outdoor plant equipment exposed to weather.</p></div>
+        </div>
+        <div class="tag-type">
+          <div class="swatch" style="background:linear-gradient(160deg,#e31c2f,#7a0e1b)"></div>
+          <div><h4>UHF RFID On-Metal Tags</h4><p>Purpose-built for server racks, electrical panels and metal cabinets that reflect standard RFID signals.</p></div>
+        </div>
+        <div class="tag-type">
+          <div class="swatch" style="background:linear-gradient(160deg,#232327,#0b0b0d)"></div>
+          <div><h4>Anti-tamper Void Labels</h4><p>Leaves a visible "VOID" mark if peeled — an instant tamper alert for high-value or portable assets.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ASSET CATEGORIES ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">SCOPE OF COVERAGE</div>
+      <h2>Every asset category, one methodology</h2>
+      <p class="lead">Different asset classes need different handling — our field teams are trained category-by-category, not generically.</p>
+    </div>
+    <div class="cat-grid reveal">
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 18v3"/></svg><span>IT &amp; Electronics</span></div>
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-6 9 6"/><path d="M4 10v9h16v-9"/><path d="M9 21v-6h6v6"/></svg><span>Furniture &amp; Fixtures</span></div>
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Plant &amp; Machinery</span></div>
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="9" width="15" height="8" rx="1"/><path d="M16 12h3l3 3v2h-6z"/><circle cx="5.5" cy="19.5" r="1.5"/><circle cx="17.5" cy="19.5" r="1.5"/></svg><span>Vehicles &amp; Fleet</span></div>
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M6 21V8l6-5 6 5v13"/><path d="M10 21v-6h4v6"/></svg><span>Capital Work-in-Progress</span></div>
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 1.4 0l1.6-1.6a1 1 0 0 0 0-1.4l-1.4-1.4a1 1 0 0 0-1.4 0l-1.6 1.6a1 1 0 0 0 0 1.4z"/><path d="M2.9 21.1L10 14"/><path d="M11 5l3 3"/></svg><span>Tools &amp; Instruments</span></div>
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-8h6v8"/></svg><span>Leasehold Improvements</span></div>
+      <div class="cat-chip"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg><span>Low-Value &amp; Consumables</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPLIANCE ================= -->
+<section style="background:var(--ink);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="color:var(--red-bright);">AUDIT &amp; COMPLIANCE READY</div>
+      <h2 style="color:#fff;">Built around how your auditors already work</h2>
+      <p class="lead" style="color:#9a9ba0;">Our reconciliation formats and documentation are structured to match standard statutory and internal audit expectations.</p>
+    </div>
+    <div class="compliance-grid reveal">
+      <div class="compliance-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h4>Companies Act, 2013 — Schedule II</h4>
+        <p>Asset classification and useful-life mapping structured to align with Schedule II depreciation categories.</p>
+      </div>
+      <div class="compliance-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 7h8"/><path d="M8 11h8"/><path d="M8 15h5"/></svg></div>
+        <h4>ICAI Guidance on PPE Audits</h4>
+        <p>Physical verification methodology and documentation trail modelled on ICAI's guidance for auditing property, plant &amp; equipment.</p>
+      </div>
+      <div class="compliance-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-4z"/></svg></div>
+        <h4>Ind AS 16 Alignment</h4>
+        <p>Verification data structured to support fair valuation, impairment review and componentisation under Ind AS 16.</p>
+      </div>
+      <div class="compliance-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h4>Data Confidentiality &amp; NDAs</h4>
+        <p>Every field associate signs an NDA before mobilisation; data capture and storage are access-controlled throughout.</p>
+      </div>
+      <div class="compliance-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></div>
+        <h4>E-Waste Compliant Disposal</h4>
+        <p>Retirement and de-tagging documentation supports responsible, e-waste rule compliant write-offs.</p>
+      </div>
+      <div class="compliance-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h4>Insurance &amp; Claims Support</h4>
+        <p>Timestamped condition photos and valuation-ready records that speed up insurer verification during claims.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INDUSTRIES ================= -->
+<section id="industries">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">WHO WE SERVE</div>
+      <h2>Asset-intensive industries, covered</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="industry-strip reveal">
+      <div class="industry-card"><span class="idx">/01</span><h4>IT &amp; ITES</h4></div>
+      <div class="industry-card"><span class="idx">/02</span><h4>Manufacturing</h4></div>
+      <div class="industry-card"><span class="idx">/03</span><h4>Banking &amp; NBFC</h4></div>
+      <div class="industry-card"><span class="idx">/04</span><h4>Healthcare</h4></div>
+      <div class="industry-card"><span class="idx">/05</span><h4>Warehousing &amp; Logistics</h4></div>
+      <div class="industry-card"><span class="idx">/06</span><h4>Education Campuses</h4></div>
+      <div class="industry-card"><span class="idx">/07</span><h4>Retail Chains</h4></div>
+      <div class="industry-card"><span class="idx">/08</span><h4>Government &amp; PSU</h4></div>
+      <div class="industry-card"><span class="idx">/09</span><h4>Hospitality</h4></div>
+      <div class="industry-card"><span class="idx">/10</span><h4>Co-working Spaces</h4></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRICING ================= -->
+<section id="pricing" class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">ENGAGEMENT MODELS</div>
+      <h2>Choose how you want to work with us</h2>
+      <p class="lead">Every engagement is scoped to your asset count and sites — these are the three shapes it usually takes.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <div class="price-card">
+        <div class="ptag">Single Site</div>
+        <h3>Starter Audit</h3>
+        <p class="pdesc">A one-time clean-up for a single location — ideal before a statutory audit or when you're setting up tracking for the first time.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Up to 2,000 assets</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Barcode tagging</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Register reconciliation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Exception report (PDF/Excel)</li>
+        </ul>
+        <a class="btn btn-outline" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27m%20interested%20in%20the%20Starter%20Audit%20package." target="_blank" rel="noopener">Request Quote</a>
+      </div>
+      <div class="price-card featured">
+        <div class="ptag">Multi-Site</div>
+        <h3>Growth Program</h3>
+        <p class="pdesc">For organisations with a few branches or floors that need both tagging and a live dashboard, not just a report.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>2,000 – 15,000 assets</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Barcode + RFID hybrid tagging</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Cloud dashboard + mobile app</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Quarterly re-verification</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Dedicated project coordinator</li>
+        </ul>
+        <a class="btn btn-primary" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27m%20interested%20in%20the%20Growth%20Program." target="_blank" rel="noopener">Request Quote</a>
+      </div>
+      <div class="price-card">
+        <div class="ptag">PAN-India</div>
+        <h3>Enterprise Retainer</h3>
+        <p class="pdesc">An always-on partnership across every location — with API access into your ERP and a named account team.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>15,000+ assets, unlimited sites</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Full tech stack incl. active RFID / GPS</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>ERP / SAP / Tally API integration</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Rolling annual audit calendar</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>Named account manager &amp; SLA</li>
+        </ul>
+        <a class="btn btn-outline" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27m%20interested%20in%20the%20Enterprise%20Retainer." target="_blank" rel="noopener">Request Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CASE STUDIES ================= -->
+<section>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">ILLUSTRATIVE ENGAGEMENTS</div>
+      <h2>What a real drive looks like</h2>
+      <p class="lead">Representative examples of the scale and outcomes a typical Assetvisors engagement delivers.</p>
+    </div>
+    <div class="case-grid reveal">
+      <div class="case-card">
+        <div class="ctag">Manufacturing · NCR</div>
+        <h4>40,000 sq. ft. plant, register untouched for 3 years</h4>
+        <p>Wall-to-wall barcode verification across production floor, warehouse and admin block, completed ahead of the statutory audit deadline.</p>
+        <div class="case-bar"><div class="lbl"><span>Register accuracy — before</span><span>58%</span></div><div class="track"><div class="fill" style="width:58%"></div></div></div>
+        <div class="case-bar"><div class="lbl"><span>Register accuracy — after</span><span>99.6%</span></div><div class="track"><div class="fill" style="width:99.6%"></div></div></div>
+      </div>
+      <div class="case-card">
+        <div class="ctag">ITES / BPO · Gurugram</div>
+        <h4>RFID tagging across 6 server racks &amp; 3 floors</h4>
+        <p>Hybrid barcode + UHF RFID deployment cut the annual IT hardware audit from six days down to under one, with a live dashboard handover.</p>
+        <div class="case-bar"><div class="lbl"><span>Audit time — before</span><span>6 days</span></div><div class="track"><div class="fill" style="width:100%"></div></div></div>
+        <div class="case-bar"><div class="lbl"><span>Audit time — after</span><span>&lt; 1 day</span></div><div class="track"><div class="fill" style="width:16%"></div></div></div>
+      </div>
+      <div class="case-card">
+        <div class="ctag">NBFC · Multi-branch</div>
+        <h4>Quarterly retainer across 40+ branches</h4>
+        <p>Rolling verification calendar keeps every branch's fixed asset register continuously reconciled instead of a single annual scramble.</p>
+        <div class="case-bar"><div class="lbl"><span>Branches on live dashboard</span><span>40+</span></div><div class="track"><div class="fill" style="width:100%"></div></div></div>
+        <div class="case-bar"><div class="lbl"><span>Open exceptions after cycle 1</span><span>&lt; 2%</span></div><div class="track"><div class="fill" style="width:2%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="band">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">CLIENT FEEDBACK</div>
+      <h2>Trusted by facility, IT &amp; finance teams</h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>Our fixed asset register hadn't been reconciled in three years. Assetvisors' team cleared a 40,000 sq. ft. facility in four days and the exception report was exactly what our auditors needed.</p>
+        <div class="who"><b>Facility Head</b>Manufacturing Plant, NCR</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>The RFID tagging on our server racks means our IT audit now takes hours instead of days. The dashboard alone was worth the engagement.</p>
+        <div class="who"><b>IT Infrastructure Manager</b>BPO / ITES, Gurugram</div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p>Professional, background-verified field staff and a smooth handover. We now run a quarterly retainer with them across all our branches.</p>
+        <div class="who"><b>Chief Finance Officer</b>NBFC, Multi-branch</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">QUESTIONS, ANSWERED</div>
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <button class="faq-q"><span>How long does a typical asset verification drive take?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Most single-site engagements up to 50,000 sq. ft. complete physical verification and tagging within 48–72 hours of team mobilisation. Multi-location or PAN-India rollouts are scheduled in parallel batches with a dedicated project timeline shared upfront.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Should we choose barcode or RFID tagging?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>It depends on your asset mix. Barcode is cost-effective for IT hardware, furniture and general assets where line-of-sight scanning is fine. RFID suits warehouses, server racks and fleets where you need to bulk-scan hundreds of assets without physically touching each one. We commonly recommend a hybrid approach and will advise after the site survey.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Can you work with our existing fixed asset software?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes. We export reconciled data in formats compatible with common ERP and fixed-asset systems (SAP, Tally, Oracle and others), or you can use our own cloud dashboard as a standalone asset register.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Do you provide the tags, printers and scanners, or do we?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>We supply everything — tag stock, on-site printing, handheld scanners and RFID readers — as part of the engagement. You don't need to procure or maintain any hardware.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Is our asset and location data kept confidential?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>All field staff sign NDAs before mobilisation, data capture happens on encrypted devices, and dashboard access is role-based. We never share client asset data with third parties.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Do you offer ongoing audits, or only one-time drives?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Both. Many clients start with a one-time clean-up and move to a quarterly or annual retainer (AMC) so the register stays accurate as assets move, get added or retired.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>How is a project priced?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Pricing is scoped on asset count, site count, technology mix (barcode vs RFID) and turnaround needed — see the three typical engagement shapes above. Share your rough asset count on WhatsApp and we'll come back with a firm quote, usually within a business day.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>Can one site use both barcode and RFID?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>Yes, and it's actually the most common setup. General furniture and low-value items typically get barcodes, while server racks, warehouses and fleet assets get RFID or GPS so they can be bulk-scanned or tracked live. We recommend the mix after the site survey.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span>What's the turnaround for a large, multi-floor campus?</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>We mobilise multiple field teams in parallel across floors or buildings, so even large campuses are typically wrapped within one to two weeks. A detailed day-wise schedule is shared before the drive begins so your teams can plan around it.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA BAND ================= -->
+<section class="cta-band">
+  <div class="wrap cta-inner">
+    <h2>Ready to see every asset you own — on one screen?</h2>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27d%20like%20a%20free%20asset%20verification%20%26%20tagging%20quote." target="_blank" rel="noopener">Chat on WhatsApp</a>
+      <a class="btn btn-ghost-white" href="tel:+919953879916">Call +91 99538 79916</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">GET IN TOUCH</div>
+      <h2>Talk to our asset advisory team</h2>
+      <p class="lead">Tell us your asset count and site details — we'll respond with a scoped quote, usually within one business day.</p>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-cards">
+        <a class="contact-card" href="mailto:support@assetvisors.in">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg></div>
+          <div><div class="label">Email</div><div class="value">support@assetvisors.in</div></div>
+        </a>
+        <a class="contact-card" href="tel:+919953879916">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+          <div><div class="label">Phone</div><div class="value">+91 99538 79916</div></div>
+        </a>
+        <a class="contact-card" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27d%20like%20to%20know%20more%20about%20your%20asset%20verification%20%26%20tagging%20services." target="_blank" rel="noopener">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+          <div><div class="label">WhatsApp</div><div class="value">Chat Instantly</div></div>
+        </a>
+        <div class="contact-card" style="cursor:default;">
+          <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.33-7-11a7 7 0 0 1 14 0c0 5.67-7 11-7 11z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div class="label">Coverage</div><div class="value">PAN-India Field Teams</div></div>
+        </div>
+      </div>
+
+      <div class="form-box">
+        <h3>Request a callback</h3>
+        <p class="lead">Fill this in and it opens straight into your email app, addressed to our team.</p>
+        <form id="leadForm">
+          <div class="form-row">
+            <div class="field"><label for="fname">Full name</label><input id="fname" type="text" required placeholder="Your name"></div>
+            <div class="field"><label for="fcompany">Company</label><input id="fcompany" type="text" placeholder="Organisation name"></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="fphone">Phone</label><input id="fphone" type="tel" required placeholder="10-digit mobile"></div>
+            <div class="field"><label for="fassets">Approx. asset count</label>
+              <select id="fassets">
+                <option>Under 500</option>
+                <option>500 – 2,000</option>
+                <option>2,000 – 10,000</option>
+                <option>10,000+</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label for="fmsg">What do you need?</label><textarea id="fmsg" placeholder="e.g. RFID tagging for a 3-floor office, plus reconciliation with our SAP register."></textarea></div>
+          <button type="submit" class="btn btn-dark" style="width:100%; justify-content:center;">Send Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo"><img src="assetvisors-logo-cropped.png" alt="Assetvisors"></div>
+        <p>Pan-India asset verification, RFID &amp; barcode tagging, and cloud tracking for enterprises that can't afford to lose track. Track. Manage. Protect.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Services</h5>
+        <ul>
+          <li><a href="#services">Asset Verification</a></li>
+          <li><a href="#services">Barcode Tagging</a></li>
+          <li><a href="#services">RFID Tagging</a></li>
+          <li><a href="#services">Register Reconciliation</a></li>
+          <li><a href="#services">Disposal Verification</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#process">How it works</a></li>
+          <li><a href="#technology">Technology</a></li>
+          <li><a href="#industries">Industries</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:support@assetvisors.in">support@assetvisors.in</a></li>
+          <li><a href="tel:+919953879916">+91 99538 79916</a></li>
+          <li><a href="https://wa.me/919953879916" target="_blank" rel="noopener">WhatsApp Chat</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Assetvisors. Complete Asset Visibility, Always.</span>
+      <div class="foot-social">
+        <a href="https://wa.me/919953879916" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></a>
+        <a href="mailto:support@assetvisors.in" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg></a>
+        <a href="tel:+919953879916" aria-label="Call"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= WHATSAPP FLOAT ================= -->
+<a class="wa-float" href="https://wa.me/919953879916?text=Hi%20Assetvisors%2C%20I%27d%20like%20a%20free%20asset%20verification%20%26%20tagging%20quote." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.44 1.32 4.94L2 22l5.29-1.39a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm0 18.08h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.13.82.83-3.05-.2-.31a8.16 8.16 0 0 1-1.26-4.3c0-4.52 3.68-8.2 8.22-8.2 2.2 0 4.26.86 5.81 2.41a8.15 8.15 0 0 1 2.41 5.8c0 4.52-3.69 8.16-8.19 8.16z"/></svg>
+</a>
+
+<script>
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  revealEls.forEach(el=>io.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item=>{
+    const q = item.querySelector('.faq-q');
+    const a = item.querySelector('.faq-a');
+    if(item.classList.contains('open')){ a.style.maxHeight = a.scrollHeight + 'px'; }
+    q.addEventListener('click', ()=>{
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o=>{
+        o.classList.remove('open');
+        o.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // mobile burger -> scrolls to contact / simple toggle of links visibility
+  const burger = document.querySelector('.burger');
+  const navLinks = document.querySelector('.nav-links');
+  burger.addEventListener('click', ()=>{
+    const shown = navLinks.style.display === 'flex';
+    navLinks.style.display = shown ? 'none' : 'flex';
+    navLinks.style.cssText += shown ? '' : 'position:absolute; top:70px; left:0; right:0; background:#fbfaf8; flex-direction:column; padding:24px 32px; border-bottom:1px solid #e5e2db; gap:18px;';
+  });
+
+  // lead form -> mailto
+  document.getElementById('leadForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('fname').value;
+    const company = document.getElementById('fcompany').value;
+    const phone = document.getElementById('fphone').value;
+    const assets = document.getElementById('fassets').value;
+    const msg = document.getElementById('fmsg').value;
+    const body = `Name: ${name}%0ACompany: ${company}%0APhone: ${phone}%0AApprox. Assets: ${assets}%0AMessage: ${msg}`;
+    window.location.href = `mailto:support@assetvisors.in?subject=Callback%20Request%20-%20Assetvisors&body=${body}`;
+  });
+</script>
+
+</body>
+</html>
